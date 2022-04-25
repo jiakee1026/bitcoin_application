@@ -16,10 +16,10 @@ class MyApp extends StatelessWidget {
       title: 'BitCoin Crypto Currency',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('BitCoin Crypto Currency'),
-          backgroundColor: Colors.yellowAccent,
+          title: const Text('BitCoin Crypto Currency Application'),
+          backgroundColor: Colors.orangeAccent,
         ),
-        body: const SingleChildScrollView(),
+        body: const MyBitCoinPage(),
       ),
     );
   }
@@ -34,9 +34,10 @@ class MyBitCoinPage extends StatefulWidget {
 
 class _MyBitCoinPageState extends State<MyBitCoinPage> {
   String selectName = "btc";
-  Currency curCurrency = Currency("Not Available", 0.0, "Not Available");
+  Currency curCurrency =
+      Currency("Not Available", 0.0, "Not Available", "Not Available");
 
-  var cName, value, type;
+  var cName, value, type, unit;
   List<String> nameList = [
     "btc",
     "eth",
@@ -133,14 +134,21 @@ class _MyBitCoinPageState extends State<MyBitCoinPage> {
                 onPressed: _loadCurrency,
                 child: const Text("CONVERT"),
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.yellowAccent,
-                    textStyle:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+                    primary: Colors.orangeAccent,
+                    textStyle: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold))),
+            Expanded(
+              child: CurrencyGrid(
+                curCurrency: curCurrency,
+              ),
+            ),
           ],
         )));
   }
 
-  Future<void> _loadCurrency() async {
+
+
+  /*_loadCurrency() async {
     ProgressDialog progressDialog = ProgressDialog(context,
         message: const Text("Progress"), title: const Text("Searching..."));
     progressDialog.show();
@@ -150,23 +158,42 @@ class _MyBitCoinPageState extends State<MyBitCoinPage> {
     if (response.statusCode == 200) {
       var jsonData = response.body;
       var parsedData = json.decode(jsonData);
+      setState((){
       cName = parsedData['rates'][selectName]['name'];
       value = parsedData['rates'][selectName]['value'];
       type = parsedData['rates'][selectName]['type'];
-      curCurrency = Currency(cName, value, type);
-    }
+      unit = parsedData['rates'][selectName]['unit'];
+      curCurrency = Currency(cName, value, type, unit);
+      });
     progressDialog.dismiss();
   }
 }
 
-class Currency {
-  var cName = "not available", value = 0.0, type = "not available";
-  Currency(this.cName, this.value, this.type);
+class CurrencyGrid extends StatefulWidget {
+  CurrencyGrid extends({Key? key}) : super(key: key);
+
+  @override
+  State<CurrencyGrid extends> createState() => _CurrencyGrid extendsState();
 }
 
-class CurrencyGrid extends StatefulWidget {
+class _CurrencyGrid extendsState extends State<CurrencyGrid extends> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+
+//class CurrencyGrid extends StatefulWidget {
+  //final Currency curCurrency;
+ // const CurrencyGrid({Key? key, required this.curCurrency}) : super(key: key);
+ // @override
+ // State<CurrencyGrid> createState() => _CurrencyGridState();
+//}
+
+/*class CurrencyGrid extends StatefulWidget {
   final Currency curCurrency;
-  const CurrencyGrid({Key? key, required this.curCurrency}) : super(key: key);
+  const CurrencyGridState({Key? key, required this.curCurrency}) : super(key: key);
   @override
   State<CurrencyGrid> createState() => _CurrencyGridState();
 }
@@ -193,10 +220,11 @@ class _CurrencyGridState extends State<CurrencyGrid> {
                 size: 64,
               ),
               Text(widget.curCurrency.cName,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold))
             ],
           ),
-          color: Colors.yellowAccent,
+          color: Colors.orangeAccent,
         ),
         Container(
           padding: const EdgeInsets.all(8),
@@ -210,10 +238,11 @@ class _CurrencyGridState extends State<CurrencyGrid> {
                 size: 64,
               ),
               Text(widget.curCurrency.value.toString(),
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold)),
             ],
           ),
-          color: Colors.yellowAccent,
+          color: Colors.orangeAccent,
         ),
         Container(
           padding: const EdgeInsets.all(8),
@@ -227,12 +256,33 @@ class _CurrencyGridState extends State<CurrencyGrid> {
                 size: 64,
               ),
               Text(widget.curCurrency.type,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold)),
             ],
           ),
-          color: Colors.yellowAccent,
+          color: Colors.orangeAccent,
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              const Text("Unit",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Icon(
+                Icons.currency_exchange_sharp,
+                size: 64,
+              ),
+              Text(widget.curCurrency.unit,
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold))
+            ],
+          ),
+          color: Colors.orangeAccent,
         ),
       ],
     );
   }
 }
+}
+*/
